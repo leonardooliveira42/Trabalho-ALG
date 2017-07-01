@@ -68,6 +68,20 @@ void gotoxy(int x, int y){
   coord.Y = y;
   SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
+void borda(){
+	int i;
+	gotoxy(0,0);
+	char c1 = (char)201;
+	gotoxy(1,1); printf("%c",c1);
+	char c2 = (char)187; 
+	gotoxy(79,1); printf("%c",c2);
+	char c3 = (char)200;
+	gotoxy(1,23); printf("%c",c3);
+	char c4 = (char)188;
+	gotoxy(79,23); printf("%c",c4);
+	
+
+}
 void setup(){
 	pos1.x = 10;
 	pos1.y = 10;
@@ -100,10 +114,10 @@ void updateBola(){
 	int x = bola.x;
 	int y = bola.y;
 	//Colisão com as bordas da tela
-	if(bola.y >= TELA_H-2 || bola.y <= 1){
+	if(bola.y >= TELA_H-3 || bola.y <= 2){
 		bola.diry=-bola.diry;
 	}
-	if(bola.x >= TELA_W-2 || bola.x <= 1){
+	if(bola.x >= TELA_W-3 || bola.x <= 2){
 		bola.dirx=-bola.dirx;
 	}
 	//Colisão com o jogador
@@ -155,14 +169,15 @@ int main(){
 	printf("Pontos: 0");
 	int end = 0;
 	while(1){ //game loop principal
+		borda();
 		inputTeclado(&ch1);
 		//inputTeclado(&ch2);
-		if(ch1 == 'w' && pos1.y>=2){ 
+		if(ch1 == 'w' && pos1.y>=3){ 
 			pos1.y-=1;
 			tela[pos1.x][pos1.y+pos1.s]=0;
 			
 		}
-		if(ch1 == 's' && pos1.y<=TELA_H-6){
+		if(ch1 == 's' && pos1.y<=TELA_H-7){
 			pos1.y+=1;
 			tela[pos1.x][pos1.y-1]=0;
 		}
