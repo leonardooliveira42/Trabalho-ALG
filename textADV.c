@@ -1,17 +1,131 @@
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <string.h>
+#define bx 14
+#define by 4
+#define bW 50
+#define bH 15
+#define ty 6
+#define tx 16
+
 
 int map[5][10] = {{0,0,0,0,3,3,3,0,0,0},{2,2,2,2,1,0,3,3,0,0},{2,2,2,0,1,0,4,4,4,4},{0,2,1,1,1,1,4,5,5,5},{0,0,2,0,1,4,4,5,5,5}};
-//PARA REFERENCIAR A MATRIZ LEMBRAR QUE E [Y][X] NAS POSIÇÕES
+int inv[6] = {0,0,0,0,0,0};
+
+
 struct pos{
 	int x;
-	int y
+	int y;
 };
+
+int linesize = (bx+bW-2)-(bx+2);
+
 
 struct pos posP;
 struct pos posT;
 
+void gotoxy(int x, int y){
+  COORD coord;
+  coord.X = x;
+  coord.Y = y;
+  SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+void respBox(){
+	int i;
+	char vert = (char)186;
+	char hori = (char)205;
+	char c1 = (char)201;
+	char c2 = (char)187;
+	char c3 = (char)200;
+	char c4 = (char)188;
+	gotoxy(bx+1,by+bH-3); 		printf("%c",c1);
+	gotoxy(bx+bW-1,by+bH-3);	printf("%c",c2);
+	gotoxy(bx+1,by+bH-1);		printf("%c",c3);
+	gotoxy(bx+bW-1,by+bH-1);	printf("%c",c4);
+	for(i=bx+2;i<bx+bW-1;i++){
+		gotoxy(i,by+bH-3);
+		printf("%c",hori);
+		gotoxy(i,by+bH-1);
+		printf("%c",hori);
+	}
+	gotoxy(bx+1,by+bH-2); 	printf("%c",vert);
+	gotoxy(bx+bW-1,by+bH-2); 	printf("%c",vert);
+	gotoxy(bx+2,by+bH-2); //bota o cursor para user input
+}
+void borda(){
+	char vert = (char)186;
+	char hori = (char)205;
+	int i;
+	gotoxy(0,0);
+	char c1 = (char)201;
+	gotoxy(bx,by); printf("%c",c1);
+	char c2 = (char)187; 
+	gotoxy(bx+bW,by); printf("%c",c2);
+	char c3 = (char)200;
+	gotoxy(bx,by+bH); printf("%c",c3);
+	char c4 = (char)188;
+	gotoxy(bx+bW,by+bH); printf("%c",c4);
+	for(i=bx+1;i<bx+bW;i++){
+		gotoxy(i,by);
+		printf("%c",hori);
+		gotoxy(i,by+bH);
+		printf("%c",hori);
+	}
+	for(i=by+1;i<by+bH;i++){
+		gotoxy(bx,i);
+		printf("%c",vert);
+		gotoxy(bx+bW,i);
+		printf("%c",vert);
+	}
+}
+
+void boxWrite(char str[]){
+	system("cls");
+	gotoxy(0,1);
+	printf("col %d,lin %d",posP.x, posP.y);
+	borda();
+	int i,j;
+	int size = (int)strlen(str);
+	char t1[linesize];
+	int lin = size/linesize;
+	int rest = size%linesize;
+	for(i = 0; i<lin;i++){
+		gotoxy(tx,ty+i);
+		for(j = linesize*i;j<(linesize*i)+linesize;j++){
+			printf("%c",str[j]);
+		}
+	}
+	gotoxy(tx,ty+i);
+	for(i = (linesize*i);i<size;i++){
+		printf("%c",str[i]);
+	}
+	respBox();
+}
+char getResposta(char str[]){
+	if(strstr(str,"Norte") != NULL || strstr(str,"norte")!= NULL)
+		return 'N';
+	if(strstr(str,"Sul") != NULL || strstr(str,"sul")!= NULL)
+		return 'S';
+	if(strstr(str,"Leste") != NULL || strstr(str,"leste")!= NULL)
+		return 'L';
+	if(strstr(str,"Oeste") != NULL || strstr(str,"oeste")!= NULL)
+		return 'O';
+	if(strstr(str,"Atacar") != NULL || strstr(str,"atacar")!= NULL)
+		return 'A';
+	if(strstr(str,"Fugir") != NULL || strstr(str,"fugir")!= NULL)
+		return 'F';
+	if(strstr(str,"Procurar") != NULL || strstr(str,"procurar")!= NULL)
+		return 'P';
+	if(strstr(str,"Inventario") != NULL || strstr(str,"inventario")!= NULL)
+		return 'I';
+	if(strstr(str,"Mapa") != NULL || strstr(str,"mapa")!= NULL)
+		return 'M';
+	
+	return ' ';
+}
 void startRandPos(){
 	srand(time(NULL));
 	int x,y;
@@ -24,7 +138,7 @@ void startRandPos(){
 	do{
 		y = rand()%5;
 		x = rand()%10;
-	}while(!map[y][x] || (posP.x == x && posP.y == y);
+	}while(!map[y][x] || (posP.x == x && posP.y == y));
 	posT.x = x;
 	posT.y = y;
 }
@@ -32,7 +146,188 @@ int randProb(int mod){
 	srand(time(NULL));
 	return rand()%mod;
 }
+int moveTo(char r){
+	if(r == 'N'){
+		if(map[posP.y-1][posP.x])
+			posP.y-=1;
+		else
+			return 0;
+	}
+	else{
+		if(r == 'S'){
+			if(map[posP.y+1][posP.x])
+				posP.y +=1;
+			else
+				return 0;
+		}
+		else{
+			if(r == 'L'){
+				if(map[posP.y][posP.x+1])
+					posP.x +=1;
+				else
+					return 0;
+			}
+			else{
+				if(map[posP.y][posP.x-1])
+					posP.x -=1;
+				else
+					return 0;
+			}	
+		}
+	}
+	return map[posP.y][posP.x];
+}
+int opcoesPadrao(char r){
+	if(r == 'N' || r == 'S' || r == 'L' || r == 'O'){
+		if(moveTo(r))
+			return 1;
+		else{
+			boxWrite("Nao Ã© possivel prosseguir nessa direcao...");
+			getch();
+		}
+	}else{
+		
+	}
+		
+}
+int floresta(int var){
+	gotoxy(0,0);
+	printf("floresta%d",var);
+	switch(var){
+		case 0:
+				boxWrite("Voce se encontra em uma clareira de uma floresta densa, a ausencia de som causa desconforto, entretanto, o ambiente nao aparenta ser amedontrador...");
+			break;
+		case 1:
+				boxWrite("A floresta na qual voce se encontra parece se extender por varios kilometros, existem diversos arbustos frondosos a sua volta...");
+			break;
+		case 2:
+				return 1;
+			break;
+		case 3:
+				return 1;
+			break;
+	}
+	char str[44];
+	scanf("%s",str);
+	char r = getResposta(str);
+	if(opcoesPadrao(r)==1)//moveTo conseguiu retorno
+		return 1;
+	return 0;
+}
+int deserto(int var){
+	gotoxy(0,0);
+	printf("deserto%d",var);
+	switch(var){
+		case 0:
+			
+			break;
+		case 1:
+				
+			break;
+		case 2:
+				
+			break;
+		case 3:
+				
+			break;
+	}
+	return 0;
+}
+int pantano(int var){
+	gotoxy(0,0);
+	printf("pantano%d",var);
+	switch(var){
+		case 0:
+				
+			break;
+		case 1:
+				
+			break;
+		case 2:
+				
+			break;
+		case 3:
+				
+			break;
+	}
+	return 0;
+}
+int caverna(int var){
+	gotoxy(0,0);
+	printf("caverna%d",var);
+	switch(var){
+		case 0:
+				
+			break;
+		case 1:
+				
+			break;
+		case 2:
+				
+			break;
+		case 3:
+				
+			break;
+	}
+	return 0;
+}
+int planice(int var){
+	gotoxy(0,0);
+	printf("planice%d",var);
+	switch(var){
+		case 0:
+				
+			break;
+		case 1:
+				
+			break;
+		case 2:
+				
+			break;
+		case 3:
+				
+			break;
+	}
+	return 0;
+}
+void tileStart(){
+	int tileType = map[posP.y][posP.x];
+	int randVar = randProb(4);
+	int r;
+	do{
+		switch(tileType){
+			case 1:
+					r = floresta(randVar);
+				break;
+			case 2:
+					r = deserto(randVar);
+				break;
+			case 3:
+					r = pantano(randVar);
+				break;
+			case 4:
+					r = caverna(randVar);
+				break;
+			case 5:
+					r = planice(randVar);
+				break;
+		}
+	}while(r!=1);
+}
 
 int main(){
+	system("chcp 65001");
+	system("cls");
+	startRandPos();
+	posP.x = 4;
+	posP.y = 3;
+	boxWrite("    Jogo da Aventura - Encontre o tesouro!        Pressione qualquer tecla para iniciar...");
+	getch();
+	while(1){
+		tileStart();
+		system("cls");
+	}
 	
 }
+
+
