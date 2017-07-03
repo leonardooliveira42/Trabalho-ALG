@@ -16,9 +16,6 @@ int inv[3] = {1,1,1};
 /* 	0 chave
 	1 mapa
 	2 espada
-	3
-	4
-	5
  */
 int procureFlag = 0;
 
@@ -88,7 +85,6 @@ void borda(){
 		printf("%c",vert);
 	}
 }
-
 void boxWrite(char str[]){
 	system("cls");
 	gotoxy(0,1);
@@ -190,6 +186,10 @@ void verInventario(char str[]){
 	int i;
 	for(i = 0; i<3 ;i++){
 		switch(i){
+			case 0:
+				if(inv[i])
+					strcat(str," Chave ");
+			break;
 			case 1:
 				if(inv[i])
 					strcat(str," Mapa ");
@@ -286,8 +286,6 @@ int opcoesPadrao(char r){
 		
 }
 int floresta(int var){
-	gotoxy(0,0);
-	printf("floresta%d",var);
 	switch(var){
 		case 0:
 				boxWrite("Voce se encontra em uma clareira de uma floresta densa, a ausencia de som causa desconforto, entretanto, o ambiente nao aparenta ser amedontrador...");
@@ -296,55 +294,45 @@ int floresta(int var){
 				boxWrite("A floresta na qual voce se encontra parece se extender por varios kilometros, existem diversos arbustos frondosos a sua volta...");
 			break;
 		case 2:
-				return 1;
+				boxWrite("Diversos galhos frondosos obstruem sua visao, enquanto seus pulmoes se enchem com o ar fresco da floresta... Voce pode sentir o vento agitando a copa das arvores acima de voce...");
 			break;
 		case 3:
-				return 1;
+				boxWrite("Voce encontra uma pequena clareira na densa floresta, onde voce consegue brevemente descancar...");
 			break;
 	}
 	return 0;
 }
 int deserto(int var){
-	gotoxy(0,0);
-	printf("deserto%d",var);
 	switch(var){
 		case 0:
-			
+				boxWrite("Voce consegue observar um horizonte interminavel repleto de dunas de areia fina...");
 			break;
 		case 1:
-				
+				boxWrite("Durante sua travessia uma breve tempestade de areia te desorientou e te fez perder o sentido que estava caminhando...");
 			break;
 		case 2:
-				
+				boxWrite("A longa caminhada pelo seco deserto resseca totalmente seu corpo, aumentando cada vez mais sua vontade de beber agua...");
 			break;
 		case 3:
-				
+				return 1;
 			break;
 	}
 	return 0;
 }
 int pantano(int var){
-	gotoxy(0,0);
-	printf("pantano%d",var);
 	switch(var){
 		case 0:
-				
 			break;
 		case 1:
-				
 			break;
 		case 2:
-				
 			break;
-		case 3:
-				
+		case 3:	
 			break;
 	}
 	return 0;
 }
 int caverna(int var){
-	gotoxy(0,0);
-	printf("caverna%d",var);
 	switch(var){
 		case 0:
 				
@@ -362,8 +350,6 @@ int caverna(int var){
 	return 0;
 }
 int planice(int var){
-	gotoxy(0,0);
-	printf("planice%d",var);
 	switch(var){
 		case 0:
 				
@@ -458,7 +444,6 @@ int tileStart(){
 	return 1;
 	
 }
-
 int main(){
 	system("chcp 65001");
 	system("cls");
@@ -470,7 +455,6 @@ int main(){
 	boxWrite("    Jogo da Aventura - Encontre o tesouro!        Pressione qualquer tecla para iniciar...");
 	getch();
 	int v=1;
-	int winflag =0;
 	while(v){
 		if(posP.x == posT.x && posP.y == posT.y){
 			if(inv[0]){
@@ -497,5 +481,4 @@ int main(){
 	getch();
 	
 }
-
 
