@@ -12,7 +12,7 @@
 #define tx 16
 int invC = 6;
 int map[5][10] = {{0,0,0,0,3,3,3,0,0,0},{2,2,2,2,1,0,3,3,0,0},{2,2,2,0,1,0,4,4,4,4},{0,2,1,1,1,1,4,5,5,5},{0,0,2,0,1,4,4,5,5,5}};
-int inv[6] = {0,1,1,0,0,0};
+int inv[3] = {1,1,1};
 /* 	0 chave
 	1 mapa
 	2 espada
@@ -93,6 +93,8 @@ void boxWrite(char str[]){
 	system("cls");
 	gotoxy(0,1);
 	printf("col %d,lin %d",posP.x, posP.y);
+	gotoxy(0,2);
+	printf("col %d,lin %d",posT.x, posT.y);
 	borda();
 	int i,j;
 	int size = (int)strlen(str);
@@ -186,7 +188,7 @@ int moveTo(char r){
 }
 void verInventario(char str[]){
 	int i;
-	for(i = 0; i<6 ;i++){
+	for(i = 0; i<3 ;i++){
 		switch(i){
 			case 1:
 				if(inv[i])
@@ -440,12 +442,16 @@ int tileStart(){
 						r = planice(randVar);
 					break;
 			}
-			
-			scanf("%s",str);
-			resp = getResposta(str);
-			if(opcoesPadrao(resp)==1)//moveTo conseguiu retorno
-				r = 1;
-			r = 0;
+			if(!r){
+				scanf("%s",str);
+				resp = getResposta(str);
+				if(opcoesPadrao(resp)==1){
+					//moveTo conseguiu retorno
+					r = 1;
+				}else{
+					r = 0;
+				}	
+			}
 		}while(r!=1);
 	}else
 		return 0;
@@ -458,6 +464,8 @@ int main(){
 	system("cls");
 	startRandPos();
 	posP.x = 4;
+	posT.x = 4;
+	posT.y = 1;
 	posP.y = 3;
 	boxWrite("    Jogo da Aventura - Encontre o tesouro!        Pressione qualquer tecla para iniciar...");
 	getch();
