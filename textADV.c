@@ -12,7 +12,7 @@
 #define tx 16
 int invC = 6;
 int map[5][10] = {{0,0,0,0,3,3,3,0,0,0},{2,2,2,2,1,0,3,3,0,0},{2,2,2,0,1,0,4,4,4,4},{0,2,1,1,1,1,4,5,5,5},{0,0,2,0,1,4,4,5,5,5}};
-int inv[3] = {1,1,1};
+int inv[3] = {0,0,0};
 /* 	0 chave
 	1 mapa
 	2 espada
@@ -129,7 +129,7 @@ char getResposta(char str[]){
 	if(strstr(str,"Mapa") != NULL || strstr(str,"mapa")!= NULL)
 		return 'M';
 	
-	return ' ';
+	return 'X';
 }
 void startRandPos(){
 	srand(time(NULL));
@@ -254,6 +254,7 @@ int opcoesPadrao(char r){
 		else{
 			boxWrite("Nao e possivel prosseguir nessa direcao...");
 			getch();
+			return 0;
 		}
 	}else{
 		if(r == 'I'){
@@ -277,12 +278,12 @@ int opcoesPadrao(char r){
 						boxWrite("Voce nao possui um mapa...");
 						getch();
 					}
-				}
-				
+				}	
 			}
 		}
 		
 	}
+	return 0;
 		
 }
 int floresta(int var){
@@ -314,7 +315,7 @@ int deserto(int var){
 				boxWrite("A longa caminhada pelo seco deserto resseca totalmente seu corpo, aumentando cada vez mais sua vontade de beber agua...");
 			break;
 		case 3:
-				return 1;
+				boxWrite("Voce nao aguenta ver mais areia...");
 			break;
 	}
 	return 0;
@@ -322,12 +323,16 @@ int deserto(int var){
 int pantano(int var){
 	switch(var){
 		case 0:
+				boxWrite("O ambiente umido e grudento do pantano dificulta sua movimentacao, tornando a travessia bem complicada...");
 			break;
 		case 1:
+				boxWrite("O cheiro putrefo enche seus pulmoes e te causa enjoo...");
 			break;
 		case 2:
+				boxWrite(" pantano 2 Nao sei mais o que escrever....");
 			break;
 		case 3:	
+				boxWrite(" pantano 3 Nao sei mais o que escrever....");
 			break;
 	}
 	return 0;
@@ -335,16 +340,16 @@ int pantano(int var){
 int caverna(int var){
 	switch(var){
 		case 0:
-				
+				boxWrite("caverna 0 Nao sei mais o que escrever....");
 			break;
 		case 1:
-				
+				boxWrite("caverna 1 Nao sei mais o que escrever....");
 			break;
 		case 2:
-				
+				boxWrite("caverna 2 Nao sei mais o que escrever....");
 			break;
 		case 3:
-				
+				boxWrite("caverna 3 Nao sei mais o que escrever....");
 			break;
 	}
 	return 0;
@@ -352,16 +357,16 @@ int caverna(int var){
 int planice(int var){
 	switch(var){
 		case 0:
-				
+				boxWrite("planice 0 Nao sei mais o que escrever....");
 			break;
 		case 1:
-				
+				boxWrite("planice 1 Nao sei mais o que escrever....");
 			break;
 		case 2:
-				
+				boxWrite("planice 2 Nao sei mais o que escrever....");
 			break;
 		case 3:
-				
+				boxWrite("planice 3 Nao sei mais o que escrever....");
 			break;
 	}
 	return 0;
@@ -406,7 +411,7 @@ int tileStart(){
 	char str[44];
 	char resp;
 	procureFlag = 0;
-	if(randProb(10)==1){
+	if(randProb(6)==1){
 		v = encontro();
 	}
 	if(!v){
@@ -448,10 +453,6 @@ int main(){
 	system("chcp 65001");
 	system("cls");
 	startRandPos();
-	posP.x = 4;
-	posT.x = 4;
-	posT.y = 1;
-	posP.y = 3;
 	boxWrite("    Jogo da Aventura - Encontre o tesouro!        Pressione qualquer tecla para iniciar...");
 	getch();
 	int v=1;
@@ -481,4 +482,3 @@ int main(){
 	getch();
 	
 }
-
