@@ -10,10 +10,17 @@
 #define bH 15
 #define ty 6
 #define tx 16
-
-
+int invC = 6;
 int map[5][10] = {{0,0,0,0,3,3,3,0,0,0},{2,2,2,2,1,0,3,3,0,0},{2,2,2,0,1,0,4,4,4,4},{0,2,1,1,1,1,4,5,5,5},{0,0,2,0,1,4,4,5,5,5}};
-int inv[6] = {0,0,0,0,0,0};
+int inv[6] = {0,1,1,0,0,0};
+/* 	0 chave
+	1 mapa
+	2 espada
+	3
+	4
+	5
+ */
+int procureFlag = 0;
 
 
 struct pos{
@@ -177,15 +184,101 @@ int moveTo(char r){
 	}
 	return map[posP.y][posP.x];
 }
+void verInventario(char str[]){
+	int i;
+	for(i = 0; i<6 ;i++){
+		switch(i){
+			case 1:
+				if(inv[i])
+					strcat(str," Mapa ");
+			break;
+			case 2:
+				if(inv[i])
+					strcat(str," Espada ");
+			break;
+		}
+	}
+}
+void procurar(){
+	int i;
+	if(randProb(4) == 1 && !inv[0] && map[posP.y][posP.x] == 3){
+		boxWrite("Em uma arvore seca voce encontra um corpo vestido com uma armadura com uma chave pendurada em um cordao... Voce coleta a chave.");
+		getch();
+		inv[0] = 1;
+		return;
+	}
+	if(randProb(5) == 1 && !inv[1] && map[posP.y][posP.x] == 2){
+		boxWrite("Cavando um buraco no chao de areia, foi possivel encontrar uma garrafa com um mapa dentro!");
+		getch();
+		inv[1] = 1;
+		return;
+	}
+	if(randProb(5) == 1 && !inv[2] && map[posP.y][posP.x] == 4){
+		boxWrite("Voce procurou nas redondezas e achou um bau prateado... Ao abri-lo encontrou uma espada reluzente!");
+		getch();
+		inv[2] = 1;
+		return;
+	}
+	boxWrite("Voce nao encontrou nada na area...");
+	getch();
+	procureFlag=1;
+}
+void verMapa(){
+	system("cls");
+	borda();
+	int i,j;
+	for(i = 0; i<5;i++){
+		gotoxy(24,9+i);
+		for(j = 0; j<10;j++){
+			if(map[i][j] == 0)
+				printf(" @ ");
+			else{
+				if(j == posP.x && i == posP.y)
+					printf("|X|");
+				else
+					printf("| |");
+			}
+			
+		}
+	}
+	gotoxy(16,17);
+	printf("| | = caminho  X = voce  @ = caminho bloqueado");
+	getch();
+}
 int opcoesPadrao(char r){
 	if(r == 'N' || r == 'S' || r == 'L' || r == 'O'){
 		if(moveTo(r))
 			return 1;
 		else{
-			boxWrite("Nao é possivel prosseguir nessa direcao...");
+			boxWrite("Nao e possivel prosseguir nessa direcao...");
 			getch();
 		}
 	}else{
+		if(r == 'I'){
+			char str[100] = "Inventario: ";
+			verInventario(str);
+			
+			boxWrite(str);
+			getch();
+		}else{
+			if(r == 'P'){
+				if(procureFlag){
+					boxWrite("Voce ja procurou nessa area...");
+					getch();
+				}else
+					procurar();
+			}else{
+				if(r == 'M'){
+					if(inv[1]){
+						verMapa();
+					}else{
+						boxWrite("Voce nao possui um mapa...");
+						getch();
+					}
+				}
+				
+			}
+		}
 		
 	}
 		
@@ -207,11 +300,6 @@ int floresta(int var){
 				return 1;
 			break;
 	}
-	char str[44];
-	scanf("%s",str);
-	char r = getResposta(str);
-	if(opcoesPadrao(r)==1)//moveTo conseguiu retorno
-		return 1;
 	return 0;
 }
 int deserto(int var){
@@ -290,29 +378,79 @@ int planice(int var){
 	}
 	return 0;
 }
-void tileStart(){
+int encontro(){
+	boxWrite("Voce encontra um monstro... o que deseja fazer?");
+	char str[44];
+	scanf("%s",str);
+	char r = getResposta(str);
+	if(r == 'F'){
+		boxWrite("Voce conseguiu fugir com sucesso do monstro!");
+		getch();
+		return 0;
+	}else{
+		if(r == 'A'){
+			if(inv[2]){
+				boxWrite("Voce atacou o monstro com a espada e o derrotou!");
+				getch();
+				if(!inv[0]){
+					boxWrite("Preso nos dentes do monstro voce retira uma chave!");
+					inv[0] = 1;
+				}
+				return 0;
+			}else{
+				boxWrite("Voce tentou atacar o monstro de maos vazias e acabou sendo devorado...");
+				getch();
+				return 1;
+			}
+		}else{
+			boxWrite("Voce nao conseguiu realizar tal acao e foi devorado pelo monstro...");
+			getch();
+			return 1;
+		}
+	}
+	return 0;
+}
+int tileStart(){
 	int tileType = map[posP.y][posP.x];
 	int randVar = randProb(4);
-	int r;
-	do{
-		switch(tileType){
-			case 1:
-					r = floresta(randVar);
-				break;
-			case 2:
-					r = deserto(randVar);
-				break;
-			case 3:
-					r = pantano(randVar);
-				break;
-			case 4:
-					r = caverna(randVar);
-				break;
-			case 5:
-					r = planice(randVar);
-				break;
-		}
-	}while(r!=1);
+	int r = 0;
+	int v = 0;
+	char str[44];
+	char resp;
+	procureFlag = 0;
+	if(randProb(10)==1){
+		v = encontro();
+	}
+	if(!v){
+		do{
+			switch(tileType){
+				case 1:
+						r = floresta(randVar);
+					break;
+				case 2:
+						r = deserto(randVar);
+					break;
+				case 3:
+						r = pantano(randVar);
+					break;
+				case 4:
+						r = caverna(randVar);
+					break;
+				case 5:
+						r = planice(randVar);
+					break;
+			}
+			
+			scanf("%s",str);
+			resp = getResposta(str);
+			if(opcoesPadrao(resp)==1)//moveTo conseguiu retorno
+				r = 1;
+			r = 0;
+		}while(r!=1);
+	}else
+		return 0;
+	return 1;
+	
 }
 
 int main(){
@@ -323,10 +461,32 @@ int main(){
 	posP.y = 3;
 	boxWrite("    Jogo da Aventura - Encontre o tesouro!        Pressione qualquer tecla para iniciar...");
 	getch();
-	while(1){
-		tileStart();
+	int v=1;
+	int winflag =0;
+	while(v){
+		if(posP.x == posT.x && posP.y == posT.y){
+			if(inv[0]){
+				boxWrite("Você encontrou um bau e o abriu com sua chave...");
+				getch();
+				v = 2;
+				break;
+			}else{
+				boxWrite("Voce observa que o bau necessita de uma chave para abri-lo... Voce decide deixa-lo ali por enquanto..");
+				getch();
+			}
+			
+		}
+		v = tileStart();
 		system("cls");
 	}
+	if(v){
+		boxWrite("Voce encontrou o tesouro!!!");
+	}else{
+		boxWrite("Voce esta morto...");
+	}
+	gotoxy(16,17);
+	printf("<FIM DE JOGO>");
+	getch();
 	
 }
 
