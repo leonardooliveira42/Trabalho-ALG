@@ -1,9 +1,8 @@
-#include <stdio.h>
+#include <stdio.h> 					//TITULO PARA O SNAKE E PARA O PONG 
 #include <windows.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <time.h>
-
 
 #define TELA_W 80
 #define TELA_H 25
@@ -18,6 +17,30 @@ struct pos{
 
 struct pos head[500];
 struct pos fruta;
+
+int ini [5][23] =  {1,1,1,0,1,0,0,0,1,0,1,1,1,0,1,0,0,1,0,1,1,1,1,
+					1,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,0,
+					1,1,1,0,1,0,1,0,1,0,1,1,1,0,1,1,0,0,0,1,1,0,0,
+					0,0,1,0,1,0,0,1,1,0,1,0,1,0,1,0,1,0,0,1,0,0,0,
+					1,1,1,0,1,0,0,0,1,0,1,0,1,0,1,0,0,1,0,1,1,1,1};
+					
+int teclaw[3][5]  ={'|',' ',' ',' ','|',
+					'|',' ',' ',' ','|',
+					'|',' ',' ','W','|',};
+					
+int teclas[3][5]  ={'|',' ',' ',' ','|',
+					'|',' ',' ',' ','|',
+					'|',' ',' ','S','|',};
+					
+int teclaa[3][5]  ={'|',' ',' ',' ','|',
+					'|',' ',' ',' ','|',
+					'|',' ',' ','A','|',};
+					
+int teclad[3][5]  ={'|',' ',' ',' ','|',
+					'|',' ',' ',' ','|',
+					'|',' ',' ','D','|',};					
+										
+										
 
 int randDir(){
 	srand(time(NULL));
@@ -139,7 +162,7 @@ int testEnd(){
 			return 1;
 		}
 	}
-	if((head[0].x == 1 || head[0].y == 1 || head[0].y == 23 || head[0].x == 79))
+	if((head[0].x == 1 || head[0].y == 1 || head[0].y == 23 || head[0].x == 79)) //bordas 
 		return 1;
 	return 0;
 }
@@ -160,10 +183,52 @@ void checkKeys(char ch){
 		}
 	}
 }
+
+void inicio(){		//Inicio do jogo
+	
+	int i, j; 
+	
+	for	(i = 0; i < 5; i++)
+		for(j = 0; j < 23; j++)	
+			if(ini[i][j] == 1) {
+				gotoxy(j+10,i+2);
+				printf("#");}
+				
+	for(i = 0; i < 3; i++)
+		for(j = 0; j < 5; j++){
+			gotoxy(j+10,i+9);
+			printf("%c",teclaw[i][j]);
+		}
+	for(i = 0; i < 3; i++)
+		for(j = 0; j < 5; j++){
+			gotoxy(j+16,i+9);
+			printf("%c",teclas[i][j]);
+			if(i == 1) printf("\tPressione W e S para subir e descer.");
+		}
+		
+	for(i = 0; i < 3; i++)
+		for(j = 0; j < 5; j++){
+			gotoxy(j+10,i+14);
+			printf("%c",teclaa[i][j]);
+		}
+	for(i = 0; i < 3; i++)
+		for(j = 0; j < 5; j++){
+			gotoxy(j+16,i+14);
+			printf("%c",teclad[i][j]);
+			if(i == 1) printf("\tPressione A e D para ir p/ os lados");
+		}
+		
+	printf("\n\n\tSe a cabeça da cobra bater em alguma parede, ou na propria calda\n\tO jogo acaba!");
+	printf("\n\tPegue as comidas que aparecem aleatoriamente\n\tPara aumentar o tamanho da cobra, e os pontos.");
+	printf("\n\n\t") ;
+	
+}
+
 int main(){
 	setup();
 	char ch;
-	system("chcp 65001");
+	//system("chcp 65001");
+	inicio(); 	
 	system("pause");
 	gotoxy(0,0);
 	printf("Pontos: 0");
