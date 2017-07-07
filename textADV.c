@@ -128,6 +128,8 @@ char getResposta(char str[]){
 		return 'I';
 	if(strstr(str,"Mapa") != NULL || strstr(str,"mapa")!= NULL)
 		return 'M';
+	if(strstr(str,"opcoes") != NULL || strstr(str,"Opcoes")!= NULL || strstr(str,"Opçoes")!= NULL || strstr(str,"opções")!= NULL || strstr(str,"Opções")!= NULL)
+		return 'H';
 	
 	return 'X';
 }
@@ -247,6 +249,10 @@ void verMapa(){
 	printf("| | = caminho  X = voce  @ = caminho bloqueado");
 	getch();
 }
+void verHelp(){
+	boxWrite("OPCOES: Norte, Sul, Leste, Oeste, Procurar,   Atacar, Ver Mapa, Fugir, Ver Inventario");
+	getch();
+}
 int opcoesPadrao(char r){
 	if(r == 'N' || r == 'S' || r == 'L' || r == 'O'){
 		if(moveTo(r))
@@ -277,6 +283,10 @@ int opcoesPadrao(char r){
 					}else{
 						boxWrite("Voce nao possui um mapa...");
 						getch();
+					}
+				}else{
+					if(r == 'H'){
+						verHelp();
 					}
 				}	
 			}
@@ -449,11 +459,24 @@ int tileStart(){
 	return 1;
 	
 }
+void inicio(){
+	gotoxy(16,9);
+	printf("Voce acordara em um lugar aleatorio e voce deve ");
+	gotoxy(16,10);
+	printf("achar o tesouro!");
+	gotoxy(16,11);
+	printf("Para se movimentar entre as areas, digite");
+	gotoxy(16,12);
+	printf("a direcao (norte, sul, ..) que deseja.");
+	gotoxy(16,13);
+	printf("Para mais acoes, digite 'opcoes' durante o jogo");
+}
 int main(){
-	system("chcp 65001");
+	//system("chcp 65001");
 	system("cls");
 	startRandPos();
 	boxWrite("    Jogo da Aventura - Encontre o tesouro!        Pressione qualquer tecla para iniciar...");
+	inicio();
 	getch();
 	int v=1;
 	while(v){
