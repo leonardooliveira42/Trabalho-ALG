@@ -252,6 +252,7 @@ int main(){
 		printf("Fim do jogo!");
 		gotoxy(80,0);
 		getch();
+		getch();
 	}
 	
 	
