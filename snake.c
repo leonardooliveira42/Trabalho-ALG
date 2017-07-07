@@ -154,6 +154,7 @@ void desenharTela(){
 	}
 	gotoxy(fruta.x,fruta.y);
 	printf("O");
+	gotoxy(10,0);
 }
 int testEnd(){
 	int i;
