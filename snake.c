@@ -249,9 +249,10 @@ int main(){
 	}
 	if(end){
 		gotoxy(30,10);
+		delay(1000);
 		printf("Fim do jogo!");
 		gotoxy(80,0);
-		getch();
+		delay(500);
 		getch();
 	}
 	
