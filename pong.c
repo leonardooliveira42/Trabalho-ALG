@@ -3,12 +3,27 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <locale.h>
 
-
-#define TELA_W 50
+#define TELA_W 79
 #define TELA_H 25
 int tela[TELA_W][TELA_H];
 int pontos = 0;
+
+int ini [5][18] =  {1,1,1,0,1,1,1,0,1,0,0,0,1,0,1,1,1,1,
+					1,0,1,0,1,0,1,0,1,1,0,0,1,0,1,0,0,0,
+					1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,1,
+					1,0,0,0,1,0,1,0,1,0,0,1,1,0,1,0,0,1,
+					1,0,0,0,1,1,1,0,1,0,0,0,1,0,1,1,1,1};
+					
+int teclaw[3][5]  ={'|',' ',' ',' ','|',
+					'|',' ',' ',' ','|',
+					'|',' ',' ','W','|',};
+					
+int teclas[3][5]  ={'|',' ',' ',' ','|',
+					'|',' ',' ',' ','|',
+					'|',' ',' ','S','|',};
+										
 struct pos{
 	int x;
 	int y;
@@ -25,6 +40,8 @@ struct ball{
 struct pos pos1;
 struct pos pos2;
 struct ball bola;
+
+
 
 int randDir(){
 	srand(time(NULL));
@@ -79,9 +96,39 @@ void borda(){
 	gotoxy(1,23); printf("%c",c3);
 	char c4 = (char)188;
 	gotoxy(79,23); printf("%c",c4);
-	
-
 }
+
+void inicio(){		//Inicio do jogo
+	
+	int i, j; 
+	
+	for	(i = 0; i < 5; i++)
+		for(j = 0; j < 18; j++)	
+			if(ini[i][j] == 1) {
+				gotoxy(j+10,i+2);
+				printf("@");}
+				
+	for(i = 0; i < 3; i++)
+		for(j = 0; j < 5; j++){
+			gotoxy(j+10,i+9);
+			printf("%c",teclaw[i][j]);
+			if(i == 1) printf("\tPressiona W para subir a barra.");
+		}
+	for(i = 0; i < 3; i++)
+		for(j = 0; j < 5; j++){
+			gotoxy(j+10,i+13);
+			printf("%c",teclas[i][j]);
+			if(i == 1) printf("\tPressiona S para descer a barra.");
+		}
+		
+	printf("\n\n       Nao deixe a bolinha passar da barra.");
+	printf("\n       A bolinha vai ricochetear nas paredes, mas se passar da barra, voce perde!");
+	printf("\n\n       Para jogar aperte qualquer tecla.");
+	
+	getch(); 
+	
+}
+
 void setup(){
 	pos1.x = 10;
 	pos1.y = 10;
@@ -151,20 +198,26 @@ void desenharTela(){
 		tela[pos1.x][i] = 1;
 	}
 	tela[(int)bola.x][(int)bola.y] = 2;
+	for(i = 2; i<TELA_H-2; i++){
+		gotoxy(pos1.x-1, i);
+		printf("-");
+	}
+	gotoxy(10,0);
 	
 	/*for(i = pos2.y; i<pos2.y+pos2.s; i++){
 		tela[pos2.x][i] = 1;
 	}*/
 }
+
 int testEnd(){
 	if(bola.x<pos1.x-1) return 1;
 	return 0;
 }
 int main(){
+	//setlocale(LC_ALL,"Portuguese");
 	setup();
 	char ch1,ch2;
-	system("chcp 65001");
-	system("pause");
+	inicio();
 	gotoxy(0,0);
 	printf("Pontos: 0");
 	int end = 0;
@@ -194,18 +247,19 @@ int main(){
 		updateBola();
 		desenharTela();
 		end = testEnd();
-		if(end)break;
+		if(end) break;
 		delay(80);
 		system("cls");
 		ch1 = 0;
 		ch2 = 0;
 	}
 	if(end){
-		gotoxy(30,10);
+		delay(500);
+		gotoxy(35,10);
 		printf("Fim do jogo!");
+		delay(2000);
 		gotoxy(80,0);
 		getch();
 	}
 	
 }
-
