@@ -9,7 +9,7 @@
     - Ping pong
     
 Trabalho desenvolvido para a disciplina de Algoritmos I do curso de Ciências da Computação
-- @Tsukalos
-- @Leonerd42
+@Tsukalos
+@Leonerd42
     
     
