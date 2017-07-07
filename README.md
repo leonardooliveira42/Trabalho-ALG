@@ -10,8 +10,8 @@
     
 Trabalho desenvolvido para a disciplina de Algoritmos I do curso de Ciências da Computação
 
-@Tsukalos
+@leonerd42
 
-@Leonerd42
+@tsukalos
     
     
