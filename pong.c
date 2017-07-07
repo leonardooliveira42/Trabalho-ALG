@@ -5,7 +5,7 @@
 #include <time.h>
 #include <locale.h>
 
-#define TELA_W 50
+#define TELA_W 79
 #define TELA_H 25
 int tela[TELA_W][TELA_H];
 int pontos = 0;
@@ -198,6 +198,11 @@ void desenharTela(){
 		tela[pos1.x][i] = 1;
 	}
 	tela[(int)bola.x][(int)bola.y] = 2;
+	for(i = 2; i<TELA_H-2; i++){
+		gotoxy(pos1.x-1, i);
+		printf("-");
+	}
+	gotoxy(10,0);
 	
 	/*for(i = pos2.y; i<pos2.y+pos2.s; i++){
 		tela[pos2.x][i] = 1;
@@ -249,8 +254,10 @@ int main(){
 		ch2 = 0;
 	}
 	if(end){
-		gotoxy(30,10);
+		delay(500);
+		gotoxy(35,10);
 		printf("Fim do jogo!");
+		delay(2000);
 		gotoxy(80,0);
 		getch();
 	}
