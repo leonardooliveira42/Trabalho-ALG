@@ -10,8 +10,8 @@
     
 Trabalho desenvolvido para a disciplina de Algoritmos I do curso de Ciências da Computação
 
-[Pedro Lamkowski](https://github.com/Tsukalos)
-
 [Leonardo Oliveira](https://github.com/Leonerd42)
+
+[Pedro Lamkowski](https://github.com/Tsukalos)
 
     
