@@ -87,10 +87,6 @@ void borda(){
 }
 void boxWrite(char str[]){
 	system("cls");
-	gotoxy(0,1);
-	printf("col %d,lin %d",posP.x, posP.y);
-	gotoxy(0,2);
-	printf("col %d,lin %d",posT.x, posT.y);
 	borda();
 	int i,j;
 	int size = (int)strlen(str);
@@ -311,6 +307,8 @@ int floresta(int var){
 				boxWrite("Voce encontra uma pequena clareira na densa floresta, onde voce consegue brevemente descancar...");
 			break;
 	}
+	gotoxy(0,2);
+	printf("Floresta");
 	return 0;
 }
 int deserto(int var){
@@ -328,6 +326,8 @@ int deserto(int var){
 				boxWrite("Voce nao aguenta ver mais areia...");
 			break;
 	}
+	gotoxy(0,2);
+	printf("Deserto");
 	return 0;
 }
 int pantano(int var){
@@ -339,29 +339,33 @@ int pantano(int var){
 				boxWrite("O cheiro putrefo enche seus pulmoes e te causa enjoo...");
 			break;
 		case 2:
-				boxWrite(" pantano 2 Nao sei mais o que escrever....");
+				boxWrite("Voce se encontra em um lugar umido e lamacento, diversos insetos se encontram zunindo e causando incomodo a sua volta...");
 			break;
 		case 3:	
-				boxWrite(" pantano 3 Nao sei mais o que escrever....");
+				boxWrite("...");
 			break;
 	}
+	gotoxy(0,2);
+	printf("Pantano");
 	return 0;
 }
 int caverna(int var){
 	switch(var){
 		case 0:
-				boxWrite("caverna 0 Nao sei mais o que escrever....");
+				boxWrite("As grossas paredes de pedra ecoam os seus passos... Voce imagina se voce esta sozinho nesse lugar fechado...");
 			break;
 		case 1:
-				boxWrite("caverna 1 Nao sei mais o que escrever....");
+				boxWrite("Diversas rochas pontiagudas se encontram em em um fosso logo a seu lado... Voce sente uma vertigem ao olhar para baixo...");
 			break;
 		case 2:
-				boxWrite("caverna 2 Nao sei mais o que escrever....");
+				boxWrite("Voce encontra um pequeno lago subterraneo que reflete a luz de uma pequena fresta na parede... Este eh um perfeito lugar para descancar...");
 			break;
 		case 3:
-				boxWrite("caverna 3 Nao sei mais o que escrever....");
+				boxWrite("...");
 			break;
 	}
+	gotoxy(0,2);
+	printf("Caverna");
 	return 0;
 }
 int planice(int var){
@@ -379,6 +383,8 @@ int planice(int var){
 				boxWrite("planice 3 Nao sei mais o que escrever....");
 			break;
 	}
+	gotoxy(0,2);
+	printf("Planice");
 	return 0;
 }
 int encontro(){
@@ -443,6 +449,7 @@ int tileStart(){
 						r = planice(randVar);
 					break;
 			}
+			respBox();
 			if(!r){
 				scanf("%s",str);
 				resp = getResposta(str);
