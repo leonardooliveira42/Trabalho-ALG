@@ -1,3 +1,6 @@
+//Trabalho de ALG
+// Pedro Lamkowski e Leonardo Oliveira
+
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
@@ -342,7 +345,7 @@ int pantano(int var){
 				boxWrite("Voce se encontra em um lugar umido e lamacento, diversos insetos se encontram zunindo e causando incomodo a sua volta...");
 			break;
 		case 3:	
-				boxWrite("...");
+				boxWrite("Em volta dos poucos caminhos avistados, voce ve luzes dentro das pocas, quando se aproxima, percebe que a corpos dentro das pocas");
 			break;
 	}
 	gotoxy(0,2);
@@ -355,13 +358,13 @@ int caverna(int var){
 				boxWrite("As grossas paredes de pedra ecoam os seus passos... Voce imagina se voce esta sozinho nesse lugar fechado...");
 			break;
 		case 1:
-				boxWrite("Diversas rochas pontiagudas se encontram em em um fosso logo a seu lado... Voce sente uma vertigem ao olhar para baixo...");
+				boxWrite("Diversas rochas pontiagudas se encontram em um fosso logo a seu lado... Voce sente uma vertigem ao olhar para baixo...");
 			break;
 		case 2:
 				boxWrite("Voce encontra um pequeno lago subterraneo que reflete a luz de uma pequena fresta na parede... Este eh um perfeito lugar para descancar...");
 			break;
 		case 3:
-				boxWrite("...");
+				boxWrite("O escuro e o gelido ar da caverna te deixam com um certo calafrio, um receio, um medo do que esta dentro da caverna");
 			break;
 	}
 	gotoxy(0,2);
@@ -371,16 +374,16 @@ int caverna(int var){
 int planice(int var){
 	switch(var){
 		case 0:
-				boxWrite("planice 0 Nao sei mais o que escrever....");
+				boxWrite("Voce vê a longa caminhada a sua frente, e derepende voce lembra do windows xp");
 			break;
 		case 1:
-				boxWrite("planice 1 Nao sei mais o que escrever....");
+				boxWrite("O verde da planice te da animo para caminhar um longo percurso, admirando a paisagem enquanto caminha");
 			break;
 		case 2:
-				boxWrite("planice 2 Nao sei mais o que escrever....");
+				boxWrite("No meio da planice voce avista uma arvore, com uma grande copa de galhos floridos, provendo sombra para alguns animais");
 			break;
 		case 3:
-				boxWrite("planice 3 Nao sei mais o que escrever....");
+				boxWrite("Ao ver o longo chão verde a sua frente, um cansaco lhe bate de imediato, mas ao horizonte voce ve o seu destino");
 			break;
 	}
 	gotoxy(0,2);
@@ -477,6 +480,8 @@ void inicio(){
 	printf("a direcao (norte, sul, ..) que deseja.");
 	gotoxy(16,13);
 	printf("Para mais acoes, digite 'opcoes' durante o jogo");
+	gotoxy(16,14);
+	printf("Use procurar para achar itens!");
 }
 int main(){
 	//system("chcp 65001");
